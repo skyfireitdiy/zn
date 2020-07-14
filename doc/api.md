@@ -11,9 +11,13 @@
 ### 1. 用户登录
 
 url: /api/login
+
 请求方式：POST
+
 header: 无
+
 请求数据格式：json
+
 请求参数：
 
 | 字段     | 类型   | 描述                               |
@@ -22,6 +26,7 @@ header: 无
 | password | string | 密码(**可能需要前台做哈希，待定**) |
 
 响应格式：json
+
 响应参数：
 
 | 字段  | 类型   | 描述                                        |
@@ -38,6 +43,7 @@ header: 无
 ```
 
 响应示例：
+
 ```json
 {
     "code":0,
@@ -51,14 +57,21 @@ header: 无
 ### 2. 用户注销
 
 url: /api/logout
+
 请求方式：GET
+
 header: token
+
 请求数据格式：无
+
 请求参数：无
+
 响应格式：json
+
 响应参数：无
 
 响应示例：
+
 ```json
 {
     "code":0,
@@ -67,21 +80,33 @@ header: token
 ```
 
 ### 3. 获取科室信息
+
 url: /api/department
+
 请求方式：GET
+
 header: token
+
 请求数据格式：无
+
 请求参数：无
+
 响应格式：json
+
 响应参数：
+
 **暂时没有看到数据库表结构，待定**
 
 ### 4. 获取患者列表信息
 
 url: /api/patients
+
 请求方式：GET
+
 header: token
+
 请求数据格式：application/x-www-form-urlencoded
+
 请求参数：
 
 | 字段       | 类型   | 描述                          |
@@ -92,26 +117,39 @@ header: token
 | type       | string | 本人:doctor 本科室:department |
 
 响应格式：json
+
 响应参数：
+
 **暂时没有看到数据库表结构，待定**
 
 ### 5. 获取文件类型列表
 
 url: /api/filetype
+
 请求方式：GET
+
 header: token
+
 请求数据格式：无
+
 请求参数：无
+
 响应格式：json
+
 响应参数：
+
 **暂时没有看到数据库表结构，待定**
 
 ### 6. 上传文件
 
 url: /api/file
+
 请求方式：POST
+
 header: token
+
 请求数据格式：multipart/form-data
+
 请求参数：
 
 | 字段 | 类型   | 描述                             |
@@ -121,9 +159,11 @@ header: token
 | pid  | string | 用户id                           |
 
 响应格式：json
+
 响应参数：无
 
 响应示例：
+
 ```json
 {
     "code":0,
@@ -134,11 +174,17 @@ header: token
 ### 7. 查看文件列表
 
 url: /api/filelist
+
 请求方式：GET
+
 header: token
+
 请求数据格式：无
+
 请求参数：无
+
 响应格式：json
+
 响应参数(列表)：
 
 | 字段     | 类型   | 描述                                |
@@ -186,9 +232,13 @@ header: token
 ### 8. 下载文件
 
 url: /api/file
+
 请求方式：GET
+
 header: token
+
 请求数据格式：multipart/form-data
+
 请求参数：
 
 | 字段 | 类型   | 描述   |
@@ -196,6 +246,7 @@ header: token
 | id   | string | 文件id |
 
 响应格式：文件内容
+
 响应参数：无
 
 ## 错误码
