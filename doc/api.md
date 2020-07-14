@@ -15,6 +15,7 @@ url: /api/login
 header: 无
 请求数据格式：json
 请求参数：
+
 | 字段     | 类型   | 描述                               |
 | :------- | :----- | :--------------------------------- |
 | user     | string | 用户名                             |
@@ -82,12 +83,14 @@ url: /api/patients
 header: token
 请求数据格式：application/x-www-form-urlencoded
 请求参数：
+
 | 字段       | 类型   | 描述                          |
 | :--------- | :----- | :---------------------------- |
 | pid        | string | 病人id（可选）                |
 | name       | string | 病人姓名（可选）              |
 | department | string | 科室                          |
 | type       | string | 本人:doctor 本科室:department |
+
 响应格式：json
 响应参数：
 **暂时没有看到数据库表结构，待定**
@@ -110,11 +113,13 @@ url: /api/file
 header: token
 请求数据格式：multipart/form-data
 请求参数：
+
 | 字段 | 类型   | 描述                             |
 | :--- | :----- | :------------------------------- |
 | file | file   | 文件                             |
 | type | string | 文件类型（**取自数据库，待定**） |
 | pid  | string | 用户id                           |
+
 响应格式：json
 响应参数：无
 
@@ -185,9 +190,11 @@ url: /api/file
 header: token
 请求数据格式：multipart/form-data
 请求参数：
+
 | 字段 | 类型   | 描述   |
 | :--- | :----- | :----- |
 | id   | string | 文件id |
+
 响应格式：文件内容
 响应参数：无
 
