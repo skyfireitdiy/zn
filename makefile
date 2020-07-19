@@ -1,13 +1,13 @@
 
-build:src/controller/* src/database/* src/models/* src/service/* src/main.go
-	docker run -v${PWD}/src:/root/zn -v${PWD}/pkg:/root/go/pkg --rm zn_image go build -o zn
+run:
+	docker run -v${PWD}:/data -e NLS_LANG='SIMPLIFIED CHINESE_CHINA.UTF8' --net=host --rm zn_image python3 main.py
 
-run:zn
-	docker run -v${PWD}/src:/root/zn -v${PWD}/pkg:/root/go/pkg --rm zn_image ./zn
+interact:
+	docker run -v${PWD}:/data -e NLS_LANG='SIMPLIFIED CHINESE_CHINA.UTF8'  -e NLS_CHARACTERSET='UTF8' --net=host -it --rm zn_image bash
 
-test:
-	docker run -v${PWD}/src:/root/zn -v${PWD}/pkg:/root/go/pkg --rm zn_image go test ./...
+
 
 image:docker/*
 	cd docker; 7z x ../3rd/dockerfile.7z
 	docker build -t zn_image docker
+	rm -rvf docker/instantclient_19_6 docker/pkg-config docker/sources.list

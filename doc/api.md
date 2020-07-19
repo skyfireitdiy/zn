@@ -206,21 +206,21 @@ header: token
         {
             "id":"aaaaaaaa",
             "filename":"问诊视频.mp4",
-            "type":"video",
+            "filetype":"video",
             "size":"6466469432",
             "uptime":"2020-02-15 03:15:35"
         },
         {
             "id":"bbbbbbbbb",
             "filename":"谈话.mp3",
-            "type":"audio",
+            "filetype":"audio",
             "size":"5446314",
             "uptime":"2020-02-15 03:15:35"
         },
         {
             "id":"ccccccccc",
             "filename":"CT.jpg",
-            "type":"image",
+            "filetype":"image",
             "size":"8512125",
             "uptime":"2020-02-15 03:15:35"
         }

@@ -1,17 +1,10 @@
 from ubuntu
-
+run mkdir /data
+workdir /data
 env DEBIAN_FRONTEND noninteractive
 env PKG_CONFIG_PATH /instantclient_19_6
 env LD_LIBRARY_PATH /instantclient_19_6
-
 copy sources.list /etc/apt/
 copy instantclient_19_6 /instantclient_19_6
-
-run apt update && apt install -y ca-certificates gcc golang pkg-config libaio1
-run go env -w GO111MODULE=on
-run go env -w GOPROXY=https://goproxy.cn,direct
-run go env -w GOPATH=/root/go
-run mkdir /root/zn
-run mkdir -p /root/go/pkg
-
-workdir /root/zn
+run apt update && apt install -y ca-certificates gcc libaio1 python3 python3-pip
+run pip3 config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple && pip3 install cx_Oracle flask pony
