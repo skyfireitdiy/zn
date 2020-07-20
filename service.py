@@ -1,9 +1,10 @@
 from database import *
 import uuid
 from datetime import *
+import os
 
 class Service:
-    def __init__(self, user, password, dsn, localfile):
+    def __init__(self, user, password, dsn):
         self._public_db = new_oracle_database(user, password, dsn)
 
     def check_password(self, user, password):
@@ -56,7 +57,23 @@ class Service:
             create_user_id,
             "0"
         ])
-        return self._public_db.pat_media_rec("select * from PAT_MEDIA_REC where PAT_MEDIA_REC_ID = :1", [new_id])[0]
+        return self._public_db.pat_media_rec("select * from PAT_MEDIA_REC where PAT_MEDIA_REC_ID = :1", [new_id])
+
+    def get_pat_media_rec_by_id(self, pat_media_rec_id):
+        return self._public_db.pat_media_rec("select * from PAT_MEDIA_REC where PAT_MEDIA_REC_ID = :1", [pat_media_rec_id])
+
+    def update_pat_media_rec(self, pat_media_rec_id, filepath):
+        self._public_db.pat_media_rec("update PAT_MEDIA_REC set FILE_PATH=:1, UPLOAD_TIME=:2, STATUS=:3 where PAT_MEDIA_REC_ID=:4", [filepath, datetime.now(), "1", pat_media_rec_id])
+        return self._public_db.pat_media_rec("select * from PAT_MEDIA_REC where PAT_MEDIA_REC_ID = :1", [pat_media_rec_id])
+    
+    def del_pat_media_rec(self, pat_media_rec_id):
+        result = self._public_db.pat_media_rec("select * from PAT_MEDIA_REC where PAT_MEDIA_REC_ID = :1", [pat_media_rec_id])
+        if len(result) == 0:
+            return 1
+        if result[0]["STATUS"] == "1":
+            os.remove(result[0]["FILE_PATH"])
+        self._public_db.execute("delete from PAT_MEDIA_REC where PAT_MEDIA_REC_ID =:1", [pat_media_rec_id])
+        return 0
 
     def get_pat_visit(self, pat_id):
         return self._public_db.pat_visit("select * from PAT_VISIT where PATIENT_ID=:1", [pat_id])

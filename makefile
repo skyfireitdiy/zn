@@ -1,9 +1,9 @@
 
 run:
-	docker run -v${PWD}:/data -e NLS_LANG='SIMPLIFIED CHINESE_CHINA.UTF8' --net=host --rm zn_image python3 main.py
+	docker run -v${PWD}:/data -e NLS_LANG='SIMPLIFIED CHINESE_CHINA.UTF8' -e NLS_CHARACTERSET='UTF8' --net=host --rm zn_image python3 main.py
 
 interact:
-	docker run -v${PWD}:/data -e NLS_LANG='SIMPLIFIED CHINESE_CHINA.UTF8'  -e NLS_CHARACTERSET='UTF8' --net=host -it --rm zn_image bash
+	docker run -v${PWD}:/data -e NLS_LANG='SIMPLIFIED CHINESE_CHINA.UTF8' -e NLS_CHARACTERSET='UTF8' --net=host -it --rm zn_image bash
 
 
 

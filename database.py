@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # import os
 # os.environ['NLS_CHARACTERSET'] = 'AL16UTF16'
 # os.environ['NLS_LANG'] = 'AMERICAN_AMERICA.AL32UTF8'
@@ -7,7 +8,7 @@ import cx_Oracle
 class Database:
     def __init__(self, user, password, dsn):
         self._connection = cx_Oracle.connect(
-            user, password, dsn, encoding="UTF-8")
+            user, password, dsn, encoding="UTF8", nencoding="UTF8")
 
     def execute(self, *args, **kwargs):
         cur = self._connection.cursor()
@@ -24,6 +25,8 @@ class Database:
         cur = self._connection.cursor()
         result = cur.execute(*args, **kwargs)
         ret = []
+        if result is None:
+            return ret
         for r in result:
             ret.append({
                 "ID":                      r[0],
@@ -49,6 +52,8 @@ class Database:
         cur = self._connection.cursor()
         result = cur.execute(*args, **kwargs)
         ret = []
+        if result is None:
+            return ret
         for r in result:
             ret.append({
                 "MEDIA_TYPE_ID": r[0],
@@ -67,6 +72,8 @@ class Database:
         cur = self._connection.cursor()
         result = cur.execute(*args, **kwargs)
         ret = []
+        if result is None:
+            return ret
         for r in result:
             ret.append({
                 "ID": r[0],
@@ -97,6 +104,8 @@ class Database:
         cur = self._connection.cursor()
         result = cur.execute(*args, **kwargs)
         ret = []
+        if result is None:
+            return ret
         for r in result:
             ret.append({
                 "PATIENT_ID": r[0],
@@ -142,6 +151,8 @@ class Database:
         cur = self._connection.cursor()
         result = cur.execute(*args, **kwargs)
         ret = []
+        if result is None:
+            return ret
         for r in result:
             ret.append({
                 "ID": r[0],
@@ -182,6 +193,8 @@ class Database:
         cur = self._connection.cursor()
         result = cur.execute(*args, **kwargs)
         ret = []
+        if result is None:
+            return ret
         for r in result:
             ret.append({
                 "PAT_MEDIA_REC_ID": r[0],
@@ -208,6 +221,8 @@ class Database:
         cur = self._connection.cursor()
         result = cur.execute(*args, **kwargs)
         ret = []
+        if result is None:
+            return ret
         for r in result:
             ret.append({
                 "ID": r[0],
@@ -254,7 +269,6 @@ if __name__ == "__main__":
     result = db.pat_master(
         "select * from PAT_MASTER where PATIENT_ID='1800567544'")
     print(result)
-    name = bytes("杨热闹".encode("gbk"))
     result = db.pat_master(
-        "select * from PAT_MASTER where NAME='" + name.decode("utf-8"))
+        "select * from PAT_MASTER where NAME=N'杨热闹'")
     print(result)
