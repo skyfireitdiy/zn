@@ -14,7 +14,7 @@ url: /api/login
 
 请求方式：POST
 
-请求数据格式：json
+请求数据格式：application/x-www-form-urlencoded
 
 请求参数：
 
