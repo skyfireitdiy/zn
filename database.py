@@ -1,14 +1,28 @@
-# -*- coding: utf-8 -*-
-# import os
-# os.environ['NLS_CHARACTERSET'] = 'AL16UTF16'
-# os.environ['NLS_LANG'] = 'AMERICAN_AMERICA.AL32UTF8'
 import cx_Oracle
-
+import threading
 
 class Database:
     def __init__(self, user, password, dsn):
+        self._user = user
+        self._password = password
+        self._dsn = dsn
+        th = threading.Thread(target=self.keep_alive)
+        th.setDaemon(True)
+        th.start()
+
+    def connect(self):
         self._connection = cx_Oracle.connect(
-            user, password, dsn, encoding="UTF8", nencoding="UTF8")
+            self._user, self._password, self._dsn, encoding="UTF8", nencoding="UTF8")
+
+    def keep_alive(self):
+        try:
+            cur = self._connection.cursor()
+            cur.execute("select count(*) from user_tables")
+            threading.sleep(180)
+        except Exception as e:
+            print("connect to db")
+            self.connect()
+            
 
     def execute(self, *args, **kwargs):
         cur = self._connection.cursor()

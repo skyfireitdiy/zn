@@ -11,4 +11,4 @@ if __name__ == '__main__':
     os.makedirs(config["local_file_save_path"], exist_ok=True)
     init_service(config)
     app.register_blueprint(api, url_prefix='/api')
-    app.run(host='0.0.0.0', port=config["port"], debug=True)
+    app.run(host='0.0.0.0', port=config["port"], debug=False)

@@ -87,9 +87,9 @@ def get_department():
 def get_patlist():
     req = request.args
     ret = make_response(0)
-    if req["name"] != "":
+    if "name" in req and req["name"] != "":
         ret["data"] = _service.get_patlist_by_name_or_id(req["name"])
-    elif req["mine"] == 1:
+    elif "mine" in req and req["mine"] == 1:
         ret["data"] = _service.get_patlist_by_user_id(
             session["user"]["LOGIN_NAME"])  # 责任医生是否是LOGIN_NAME
     else:

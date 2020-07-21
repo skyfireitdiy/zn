@@ -1,0 +1,14 @@
+version: '3'
+services:
+    web:
+        image: zn_image
+        ports:
+            - "9393:9393"
+        volumes:
+            - .:/data
+        command: [python3, main.py]
+        environment: 
+            - NLS_LANG='SIMPLIFIED CHINESE_CHINA.UTF8'
+            - NLS_CHARACTERSET='UTF8'
+        restart: always
+        
