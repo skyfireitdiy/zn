@@ -41,6 +41,15 @@ def check_login(f):
         return f(*args, **kwargs)
     return r
 
+def logger(f):
+    @wraps(f)
+    def r(*args, **kwargs):
+        try:
+            return f(*args, **kwargs)
+        except Exception as e:
+            current_app.logger.error(e)
+            return None
+    return r
 
 def make_response(code):
     return {
@@ -50,6 +59,7 @@ def make_response(code):
 
 
 @api.route("/login", methods=["POST"])
+@logger
 def login():
     req = request.form
     userinfo = _service.check_password(req["user"], req["password"])
@@ -68,6 +78,7 @@ def login():
 
 
 @api.route("/logout", methods=["GET"])
+@logger
 @check_login
 def logout():
     del session["user"]
@@ -75,6 +86,7 @@ def logout():
 
 
 @api.route("/dept", methods=["GET"])
+@logger
 @check_login
 def get_department():
     ret = make_response(0)
@@ -83,6 +95,7 @@ def get_department():
 
 
 @api.route("/patlist", methods=["GET"])
+@logger
 @check_login
 def get_patlist():
     req = request.args
@@ -98,6 +111,7 @@ def get_patlist():
 
 
 @api.route("/mediatype", methods=["GET"])
+@logger
 @check_login
 def get_mediatype():
     ret = make_response(0)
@@ -106,6 +120,7 @@ def get_mediatype():
 
 
 @api.route("/patmediarec", methods=["GET"])
+@logger
 @check_login
 def get_patmediarec():
     req = request.args
@@ -115,6 +130,7 @@ def get_patmediarec():
 
 
 @api.route("/patmediarec", methods=["POST"])
+@logger
 @check_login
 def add_patmediarec():
     req = request.form
@@ -134,6 +150,7 @@ def add_patmediarec():
 
 
 @api.route("/patmediarec", methods=["DELETE"])
+@logger
 @check_login
 def del_patmediarec():
     req = request.args
@@ -144,6 +161,7 @@ def del_patmediarec():
 
 
 @api.route("/upload", methods=["POST"])
+@logger
 @check_login
 def upload():
     global _config
@@ -163,6 +181,7 @@ def upload():
     return ret
 
 @api.route("/file", methods=["GET"])
+@logger
 @check_login
 def download_file():
     req = request.args
@@ -179,6 +198,7 @@ def download_file():
 
 
 @api.route("/patvisit", methods=["GET"])
+@logger
 @check_login
 def get_pat_visit():
     req = request.args

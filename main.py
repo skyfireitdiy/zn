@@ -2,11 +2,22 @@ from flask import *
 from controller import *
 from config_manager import *
 import os
+import logging
+from logging.handlers import *
 
 if __name__ == '__main__':
     os.environ['NLS_LANG'] = 'SIMPLIFIED CHINESE_CHINA.UTF8'
     app = Flask(__name__)
     app.secret_key = uuid.uuid1().hex
+
+    formatter = logging.Formatter(
+        "[%(asctime)s][%(filename)s:%(lineno)d][%(levelname)s][%(thread)d] - %(message)s")
+    handler = TimedRotatingFileHandler(
+        "zn.log", when="D", interval=1, backupCount=15,
+        encoding="UTF-8", delay=False, utc=True)
+    app.logger.addHandler(handler)
+    handler.setFormatter(formatter)
+
     config = load_config("config.json")
     os.makedirs(config["local_file_save_path"], exist_ok=True)
     init_service(config)

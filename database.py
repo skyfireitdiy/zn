@@ -6,6 +6,7 @@ class Database:
         self._user = user
         self._password = password
         self._dsn = dsn
+        self.connect()
         th = threading.Thread(target=self.keep_alive)
         th.setDaemon(True)
         th.start()
@@ -16,11 +17,10 @@ class Database:
 
     def keep_alive(self):
         try:
-            cur = self._connection.cursor()
-            cur.execute("select count(*) from user_tables")
-            threading.sleep(180)
+            while True:
+                self._connection.ping()
+                threading.sleep(30)
         except Exception as e:
-            print("connect to db")
             self.connect()
             
 
