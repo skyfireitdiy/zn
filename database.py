@@ -1,48 +1,33 @@
 import cx_Oracle
 import threading
 
+
 class Database:
     def __init__(self, user, password, dsn):
         self._user = user
         self._password = password
         self._dsn = dsn
-        self.connect()
-        th = threading.Thread(target=self.keep_alive)
-        th.setDaemon(True)
-        th.start()
-
-    def connect(self):
-        self._connection = cx_Oracle.connect(
-            self._user, self._password, self._dsn, encoding="UTF8", nencoding="UTF8")
-
-    def keep_alive(self):
-        try:
-            while True:
-                cur = self._connection.cursor()
-                result = cur.execute("select count(*) from COMMON_USER")
-                if result is not None:
-                    self.connect()
-                    continue
-                cur.close()
-                threading.sleep(30)
-        except Exception as e:
-            self.connect()
-            
+        self._connection_pool = cx_Oracle.SessionPool(
+            user=self._user, password=self._password, dsn=self._dsn, min=1, max=500, increment=1)
 
     def execute(self, *args, **kwargs):
-        cur = self._connection.cursor()
-        result = cur.execute(*args, **kwargs)
-        ret = []
-        if result is not None:
-            for row in result:
-                ret.append(row)
-        cur.close()
-        self._connection.commit()
-        return ret
+        try:
+            connection = self._connection_pool.acquire()
+            cur = connection.cursor()
+            result = cur.execute(*args, **kwargs)
+            ret = []
+            if result is not None:
+                for row in result:
+                    ret.append(row)
+            cur.close()
+            self._connection_pool.release(connection)
+            return ret
+        except Exception as e:
+            self._connection_pool.release(connection)
+            raise e
 
     def common_user(self, *args, **kwargs):
-        cur = self._connection.cursor()
-        result = cur.execute(*args, **kwargs)
+        result = self.execute(*args, **kwargs)
         ret = []
         if result is None:
             return ret
@@ -63,13 +48,13 @@ class Database:
                 "CREATE_TIME":             r[12],
                 "IS_STOP":                 r[13],
             })
-        cur.close()
-        self._connection.commit()
+        
+        
         return ret
 
     def dict_media_type(self, *args, **kwargs):
-        cur = self._connection.cursor()
-        result = cur.execute(*args, **kwargs)
+
+        result = self.execute(*args, **kwargs)
         ret = []
         if result is None:
             return ret
@@ -83,13 +68,13 @@ class Database:
                 "CREATE_TIME": r[5],
                 "IS_STOP": r[6],
             })
-        cur.close()
-        self._connection.commit()
+        
+        
         return ret
 
     def dict_dept(self, *args, **kwargs):
-        cur = self._connection.cursor()
-        result = cur.execute(*args, **kwargs)
+
+        result = self.execute(*args, **kwargs)
         ret = []
         if result is None:
             return ret
@@ -115,13 +100,13 @@ class Database:
                 "CONDITION_GRADE_CODE": r[17],
                 "NURSING_GRADE_CODE": r[18],
             })
-        cur.close()
-        self._connection.commit()
+        
+        
         return ret
 
     def pat_master(self, *args, **kwargs):
-        cur = self._connection.cursor()
-        result = cur.execute(*args, **kwargs)
+
+        result = self.execute(*args, **kwargs)
         ret = []
         if result is None:
             return ret
@@ -162,13 +147,13 @@ class Database:
                 "PATIENT_PROPERTY": r[32],
                 "ID_TYPE": r[33],
             })
-        cur.close()
-        self._connection.commit()
+        
+        
         return ret
 
     def pat_visit(self, *args, **kwargs):
-        cur = self._connection.cursor()
-        result = cur.execute(*args, **kwargs)
+
+        result = self.execute(*args, **kwargs)
         ret = []
         if result is None:
             return ret
@@ -204,13 +189,13 @@ class Database:
                 "INPATIENT_DEPT": r[27],
                 "EMR_NO": r[28],
             })
-        cur.close()
-        self._connection.commit()
+        
+        
         return ret
 
     def pat_media_rec(self, *args, **kwargs):
-        cur = self._connection.cursor()
-        result = cur.execute(*args, **kwargs)
+
+        result = self.execute(*args, **kwargs)
         ret = []
         if result is None:
             return ret
@@ -232,13 +217,13 @@ class Database:
                 "UPLOAD_USER_ID": r[13],
                 "STATUS": r[14],
             })
-        cur.close()
-        self._connection.commit()
+        
+        
         return ret
 
     def pat_visit(self, *args, **kwargs):
-        cur = self._connection.cursor()
-        result = cur.execute(*args, **kwargs)
+
+        result = self.execute(*args, **kwargs)
         ret = []
         if result is None:
             return ret
@@ -274,8 +259,8 @@ class Database:
                 "INPATIENT_DEPT": r[27],
                 "EMR_NO": r[28],
             })
-        cur.close()
-        self._connection.commit()
+        
+        
         return ret
 
 
