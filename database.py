@@ -18,7 +18,12 @@ class Database:
     def keep_alive(self):
         try:
             while True:
-                self._connection.ping()
+                cur = self._connection.cursor()
+                result = cur.execute("select count(*) from COMMON_USER")
+                if result is not None:
+                    self.connect()
+                    continue
+                cur.close()
                 threading.sleep(30)
         except Exception as e:
             self.connect()
