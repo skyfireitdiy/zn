@@ -269,7 +269,7 @@ def new_oracle_database(user, password, dsn):
 
 
 if __name__ == "__main__":
-    db = new_oracle_database("app", "app123456", "114.115.140.157:1521/orcl")
+    db = new_oracle_database("username", "password", "ip:port/orcl")
     result = db.pat_master(
         "select * from PAT_MASTER where PATIENT_ID='1800567544'")
     print(result)
