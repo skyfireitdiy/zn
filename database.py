@@ -19,6 +19,7 @@ class Database:
             if result is not None:
                 for row in result:
                     ret.append(row)
+            connection.commit()
             cur.close()
             self._connection_pool.release(connection)
             return ret
@@ -267,12 +268,3 @@ class Database:
 def new_oracle_database(user, password, dsn):
     return Database(user, password, dsn)
 
-
-if __name__ == "__main__":
-    db = new_oracle_database("username", "password", "ip:port/orcl")
-    result = db.pat_master(
-        "select * from PAT_MASTER where PATIENT_ID='1800567544'")
-    print(result)
-    result = db.pat_master(
-        "select * from PAT_MASTER where NAME=N'杨热闹'")
-    print(result)
